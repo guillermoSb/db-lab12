@@ -3,6 +3,8 @@
 
 import psycopg2
 from psycopg2 import sql
+from psycopg2.extensions import make_dsn
+
 
 def createUser(carnet, nombres, apellidos, mail, password):
     conn = psycopg2.connect("host=localhost dbname=lab12 user=postgres password=October19")  # Connect to the Database
@@ -13,7 +15,7 @@ def createUser(carnet, nombres, apellidos, mail, password):
 
     query = sql.SQL("CREATE USER {0} \
                  WITH PASSWORD {1} \
-                 VALID UNTIL '2022-05-08T22:25:17-06:00'").format(
+                 VALID UNTIL '2022-05-09T22:25:17-06:00'").format(
                      sql.Identifier(mail),
                      sql.Literal(password),
     )
@@ -30,7 +32,9 @@ def createUser(carnet, nombres, apellidos, mail, password):
     conn.commit()
 
 def assignCourse(carnet, semestre, codigo_curso, year, mail, password, carnet_catedratico):
-    conn = psycopg2.connect("host=localhost dbname=lab12 user=%s password=%s", (mail, password))  
+    dsn = make_dsn('host=localhost dbname=lab12', user=mail, password=password)
+    conn = psycopg2.connect(dsn)
+
     cur = conn.cursor()
 
     cur.execute('INSERT INTO asignaciones (carnet_estudiante, semestre, codigo_curso, year, carnet_catedratico) \
