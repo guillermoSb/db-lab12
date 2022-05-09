@@ -41,7 +41,7 @@ def menu():
 menu()
 option = int(input('\nIngrese una opcion: '))
 
-while option != 5:
+while option != 4:
     if option == 1:
         optionAdmin = int(input('\nSeleccione un administrador\n1. Administrador Campus Central\n2. Administrador Campus Altiplano\n'))
         if optionAdmin == 1:
@@ -58,7 +58,7 @@ while option != 5:
         semestre = input("Ingrese el nuevo numero de semestre para esta asignacion: ")
         updateAssignment(carnet, codigo_curso, semestre, username, password)
     elif option == 2:
-        optionAdmin = input('Seleccione un administrador\n1. Administrador Campus Central\n2. Administrador Campus Altiplano')
+        optionAdmin = int(input('\nSeleccione un administrador\n1. Administrador Campus Central\n2. Administrador Campus Altiplano\n'))
         if optionAdmin == 1:
             username = 'user_campus_central'
             password = '123'
@@ -67,11 +67,11 @@ while option != 5:
             password = '456'
         else:
             print('Opcion invalida')
-        carnet = input("Ingrese el carnet del estudiante que desea actualizar: ")
-        codigo_curso = input("Ingrese el codigo del curso de la asignacion que desea actualizar: ")
+        carnet = input("Ingrese el carnet del estudiante que desea borrar: ")
+        codigo_curso = input("Ingrese el codigo del curso de la asignacion que desea borrar: ")
         deleteAssigment(carnet, codigo_curso, username, password)
     elif option == 3:
-        optionAdmin = input('Seleccione un administrador\n1. Administrador Campus Central\n2. Administrador Campus Altiplano')
+        optionAdmin = int(input('\nSeleccione un administrador\n1. Administrador Campus Central\n2. Administrador Campus Altiplano\n'))
         if optionAdmin == 1:
             username = 'user_campus_central'
             password = '123'
@@ -80,15 +80,12 @@ while option != 5:
             password = '456'
         else:
             print('Opcion invalida')
-        carnet = input("Ingrese el carnet del estudiante que desea actualizar: ")
-        codigo_curso = input("Ingrese el codigo del curso de la asignacion que desea actualizar: ")
-        semestre = input("Ingrese el nuevo numero de semestre para esta asignacion: ")
-        year = input("Ingrese el año de asignacion: ")
+        carnet = input("Ingrese el carnet del estudiante que desea añadir: ")
+        codigo_curso = input("Ingrese el codigo del curso de la asignacion que desea añadir a la asignación: ")
+        semestre = input("Ingrese el numero de semestre para esta asignacion: ")
+        year = input("Ingrese el año de la asignacion: ")
         carnet_catedratico = input("Ingrese el carnet del catedratico que imparte el curso: ")
         addAssigment(carnet, semestre, codigo_curso, year, username, password, carnet_catedratico)
-    elif option == 4:
-        print("Saliendo.")
-        break;
     else:
         print('Opcion invalida')
 
