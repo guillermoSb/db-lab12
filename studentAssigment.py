@@ -1,6 +1,3 @@
-## Crear funcion para crear a usuario
-## Crear funcion para que se asigne
-
 import psycopg2
 from psycopg2 import sql
 from psycopg2.extensions import make_dsn
@@ -15,7 +12,7 @@ def createUser(carnet, nombres, apellidos, mail, password):
 
     query = sql.SQL("CREATE USER {0} \
                  WITH PASSWORD {1} \
-                 VALID UNTIL '2022-05-09T22:25:17-06:00'").format(
+                 VALID UNTIL '2022-05-09T12:59:00-06:00'").format(
                      sql.Identifier(mail),
                      sql.Literal(password),
     )
@@ -91,10 +88,5 @@ while option != 5:
     print()
     menu()
     option = int(input('\nIngrese una opcion: '))
-
-
-
-
-#GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA schema_name TO username;
 
 
