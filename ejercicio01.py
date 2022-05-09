@@ -11,4 +11,3 @@ year = input("Ingrese el año: ")
 nota = input("Ingrese la nota: ")
 carnet_catedratico = input("Ingrese el carnet del catedrático: ")
 
-

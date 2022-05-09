@@ -41,11 +41,19 @@ def assignCourse(carnet, semestre, codigo_curso, year, mail, password, carnet_ca
                  VALUES (%s, %s, %s, %s, %s)', (carnet, semestre, codigo_curso, year, carnet_catedratico))
     conn.commit()
 
+def updateAssignment(carnet, codigoCurso,semestre, mail, password):
+    dsn = make_dsn('host=localhost dbname=lab12', user=mail, password=password)
+    conn = psycopg2.connect(dsn)
+    cur = conn.cursor()
+    cur.execute('UPDATE asignaciones SET semestre = %s\
+                     WHERE carnet = %s AND codigo_curso = %s', (semestre, carnet, codigoCurso))
+    conn.commit()
 
 def menu():
     print('\n1. Crear cuenta')
     print('2. Asignarse a curso')
-    print('3. Salir')
+    print('3. Actualizar el semestre de una asignacion')
+    print('4. Salir')
 
 menu()
 option = int(input('\nIngrese una opcion: '))
@@ -67,7 +75,16 @@ while option != 5:
         year = input("Ingrese el año: ")
         carnet_catedratico = input("Ingrese el carnet del catedratico: ")
         assignCourse(carnet, semestre, codigo_curso, year, mail, password, carnet_catedratico)
-
+    elif option == 3:
+        mail = input("Ingrese su correo: ")
+        password = input("Ingrese su contrasenia: ")
+        carnet = input("Ingrese el carnet del estudiante que desea actualizar: ")
+        codigo_curso = input("Ingrese el codigo del curso de la asignacion que desea actualizar: ")
+        semestre = input("Ingrese el nuevo numero de semestre para esta asignacion: ")
+        updateAssignment(carnet, codigo_curso, semestre, mail, password)
+    elif option == 4:
+        print("Saliendo.")
+        break;
     else:
         print('Opcion invalida')
 
