@@ -2,6 +2,7 @@
 ## Crear funcion para que se asigne
 
 import psycopg2
+from psycopg2 import sql
 
 def createUser(carnet, nombres, apellidos, mail, password):
     conn = psycopg2.connect("host=localhost dbname=lab12 user=postgres password=October19")  # Connect to the Database
@@ -10,13 +11,23 @@ def createUser(carnet, nombres, apellidos, mail, password):
     cur.execute("INSERT INTO estudiantes (carnet, nombres, apellidos, correo, user_password) \
                  VALUES (%s, %s, %s, %s, %s)", (carnet, nombres, apellidos, mail, password))
 
-    cur.execute("CREATE USER %s \
-                 WITH PASSWORD %s \
-                 VALID UNTIL '2022-05-08T15:15:17-06:00';", (mail, password))
+    query = sql.SQL("CREATE USER {0} \
+                 WITH PASSWORD {1} \
+                 VALID UNTIL '2022-05-08T22:25:17-06:00'").format(
+                     sql.Identifier(mail),
+                     sql.Literal(password),
+    )
+    cur.execute(query.as_string(conn))
 
-    cur.execute("GRANT      INSERT \
+
+    query2 = sql.SQL("GRANT      INSERT \
                  ON         asignaciones \
-                 TO         %s';", (mail))
+                 TO {0}").format(
+                    sql.Identifier(mail)
+                    )
+    cur.execute(query2.as_string(conn))
+    
+    conn.commit()
 
 def assignCourse(carnet, semestre, codigo_curso, year, mail, password, carnet_catedratico):
     conn = psycopg2.connect("host=localhost dbname=lab12 user=%s password=%s", (mail, password))  
@@ -24,6 +35,7 @@ def assignCourse(carnet, semestre, codigo_curso, year, mail, password, carnet_ca
 
     cur.execute('INSERT INTO asignaciones (carnet_estudiante, semestre, codigo_curso, year, carnet_catedratico) \
                  VALUES (%s, %s, %s, %s, %s)', (carnet, semestre, codigo_curso, year, carnet_catedratico))
+    conn.commit()
 
 
 def menu():
@@ -43,7 +55,7 @@ while option != 5:
         password = input("Ingrese una contraseña: ")
         createUser(carnet, nombres, apellidos, mail, password)
     elif option == 2:
-        mail = ("\n Ingrese su correo")
+        mail = input("\n Ingrese su correo: ")
         password = input("Ingrese su contrasenia: ")
         carnet = input("Ingrese su numero de carnet: ")
         semestre = input("Ingrese semestre: ")
